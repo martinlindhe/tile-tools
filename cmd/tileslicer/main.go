@@ -9,16 +9,14 @@ import (
 )
 
 var (
-	file       = kingpin.Arg("file", "Input png tileset").Required().File()
-	outDir     = kingpin.Arg("outdir", "Output dir").Required().String()
-	tileWidth  = kingpin.Arg("width", "Tile width").Required().Int()
-	tileHeight = kingpin.Arg("height", "Tile height").Required().Int()
+	file       = kingpin.Arg("in", "Input PNG").Required().File()
+	outDir     = kingpin.Flag("out", "Output directory").Required().Short('o').String()
+	tileWidth  = kingpin.Flag("width", "Tile width").Required().Short('w').Int()
+	tileHeight = kingpin.Flag("height", "Tile height").Required().Short('h').Int()
 )
 
 func main() {
 
-	// support -h for --help
-	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
 
 	inFileName := (*file).Name()

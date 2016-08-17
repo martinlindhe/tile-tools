@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	inDir = kingpin.Arg("indir", "Input directory").Required().String()
+	inDir = kingpin.Arg("in", "Input directory").Required().String()
 )
 
 func main() {
