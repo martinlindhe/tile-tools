@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/draw"
 	"io/ioutil"
+	"math"
 	"path/filepath"
 
 	tiletools "github.com/martinlindhe/tile-tools/lib"
@@ -54,7 +55,7 @@ func main() {
 	}
 
 	outWidth := *tilesPerRow * tileWidth
-	outHeight := (tileCount / *tilesPerRow) * tileHeight
+	outHeight := int(math.Ceil(float64(tileCount)/float64(*tilesPerRow))) * tileHeight
 
 	fmt.Printf("Creating tileset of %d tiles with %dx%d pixels, %d tiles per row. Output is image is %dx%d pixels\n", tileCount, tileWidth, tileHeight, *tilesPerRow, outWidth, outHeight)
 
