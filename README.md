@@ -15,6 +15,13 @@ Slice input PNG into several tiles, save to out_font
     $ tileslicer _samples/ground.png --out _tmp --width 8 --height 12
     74 tiles written to _tmp
 
+### Usage - tileflipper
+
+Flip (mirror) input PNG
+
+    $ tileflipper _samples/ground.png --out flipped-ground-h.png --horizontal
+    $ tileflipper _samples/ground.png --out flipped-ground-v.png --vertical
+
 
 ### Usage - tilecutter
 
