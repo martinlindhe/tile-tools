@@ -7,7 +7,7 @@ import (
 
 func mkdirIfNotExisting(path string) {
 	if pathDontExist(path) {
-		err := os.Mkdir(path, 0777)
+		err := os.Mkdir(path, 0700)
 		if err != nil {
 			log.Fatalf("Could not create %s: %s", path, err)
 		}

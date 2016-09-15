@@ -21,63 +21,12 @@ var (
 	twoThirds  = kingpin.Flag("two-thirds", "Use 2/3 of image.").Bool()
 )
 
-// TODO: allow to choose half, 1/3 or 2/3 to keep
-
 func main() {
-
-	var section tiletools.Section
-	var keepSize tiletools.KeepSize
 
 	// support -h for --help
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
-
-	keep := 0
-	if *keepTop {
-		section = tiletools.Top
-		keep++
-	}
-	if *keepBottom {
-		section = tiletools.Bottom
-		keep++
-	}
-	if *keepRight {
-		section = tiletools.Right
-		keep++
-	}
-	if *keepLeft {
-		section = tiletools.Left
-		keep++
-	}
-
-	if keep > 1 {
-		log.Fatalf("error: use only one of --keep-top, --keep-bottom, --keep-left and --keep-right")
-	}
-
-	if keep == 0 {
-		log.Fatalf("error: use either --keep-top, --keep-bottom, --keep-left or --keep-right")
-	}
-
-	size := 0
-	if *half {
-		size++
-		keepSize = tiletools.Half
-	}
-	if *oneThird {
-		size++
-		keepSize = tiletools.OneThird
-	}
-	if *twoThirds {
-		size++
-		keepSize = tiletools.TwoThirds
-	}
-
-	if size > 1 {
-		log.Fatal("error: use only one of --half, --one-third and --two-third")
-	}
-	if size == 0 {
-		log.Fatal("error: use either --half, --one-third or --two-thirds")
-	}
+	section, keepSize := parseSectionAndKeepSize()
 
 	// loop over input folder
 	files, err := ioutil.ReadDir(*inDir)
@@ -91,5 +40,50 @@ func main() {
 		if err := imaging.Save(img, p); err != nil {
 			log.Fatal(err)
 		}
+	}
+}
+
+func parseSectionAndKeepSize() (tiletools.Section, tiletools.KeepSize) {
+	var section tiletools.Section
+	var keepSize tiletools.KeepSize
+	keep := 0
+	size := 0
+	switch {
+	case *keepTop:
+		section = tiletools.Top
+		keep++
+	case *keepBottom:
+		section = tiletools.Bottom
+		keep++
+	case *keepRight:
+		section = tiletools.Right
+		keep++
+	case *keepLeft:
+		section = tiletools.Left
+		keep++
+	case *half:
+		keepSize = tiletools.Half
+		size++
+	case *oneThird:
+		keepSize = tiletools.OneThird
+		size++
+	case *twoThirds:
+		keepSize = tiletools.TwoThirds
+		size++
+	}
+	checkErrors(keep, size)
+	return section, keepSize
+}
+
+func checkErrors(keep, size int) {
+	switch {
+	case keep > 1:
+		log.Fatalf("error: use only one of --keep-top, --keep-bottom, --keep-left and --keep-right")
+	case keep == 0:
+		log.Fatalf("error: use either --keep-top, --keep-bottom, --keep-left or --keep-right")
+	case size > 1:
+		log.Fatal("error: use only one of --half, --one-third and --two-third")
+	case size == 0:
+		log.Fatal("error: use either --half, --one-third or --two-thirds")
 	}
 }

@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"image"
 	"image/draw"
-	"log"
 	"os"
 )
 
@@ -39,18 +38,8 @@ func DecodeImage(filename string) (image.Image, string, error) {
 	return image.Decode(bufio.NewReader(f))
 }
 
-// GetPartOfImage returns 1/3:rd of section
-func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.RGBA {
-
-	img, _, err := DecodeImage(fileName)
-	if err != nil {
-		panic(err)
-	}
-	b := img.Bounds()
-
+func usedBounds(section Section, keepSize KeepSize, b image.Rectangle) (int, int) {
 	var tX, tY int
-	var sr image.Rectangle
-
 	if section == Bottom || section == Top {
 		switch keepSize {
 		case OneThird:
@@ -76,6 +65,12 @@ func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.
 			tY = b.Max.Y
 		}
 	}
+	return tX, tY
+}
+
+func makeRect(section Section, keepSize KeepSize, b image.Rectangle) (int, int, image.Rectangle) {
+	var sr image.Rectangle
+	tX, tY := usedBounds(section, keepSize, b)
 
 	switch section {
 	case Bottom:
@@ -87,7 +82,6 @@ func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.
 		case TwoThirds:
 			sr = image.Rect(0, b.Max.Y-tY, b.Max.X, b.Max.Y)
 		}
-
 	case Top:
 		switch keepSize {
 		case OneThird:
@@ -97,7 +91,6 @@ func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.
 		case TwoThirds:
 			sr = image.Rect(0, 0, b.Max.X, tY)
 		}
-
 	case Left:
 		switch keepSize {
 		case OneThird:
@@ -107,7 +100,6 @@ func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.
 		case TwoThirds:
 			sr = image.Rect(0, 0, tX, b.Max.Y)
 		}
-
 	case Right:
 		switch keepSize {
 		case OneThird:
@@ -117,12 +109,19 @@ func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.
 		case TwoThirds:
 			sr = image.Rect(b.Max.X-tX, 0, b.Max.X, b.Max.Y)
 		}
-
-	default:
-		log.Fatal("not handled", section)
-		return nil
 	}
+	return tX, tY, sr
+}
 
+// GetPartOfImage returns 1/3:rd of section
+func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.RGBA {
+
+	img, _, err := DecodeImage(fileName)
+	if err != nil {
+		panic(err)
+	}
+	b := img.Bounds()
+	tX, tY, sr := makeRect(section, keepSize, b)
 	dst := image.NewRGBA(image.Rect(0, 0, tX, tY))
 	r := sr.Sub(sr.Min).Add(image.Point{0, 0})
 	draw.Draw(dst, r, img, sr.Min, draw.Src)

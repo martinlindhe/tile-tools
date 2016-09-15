@@ -32,17 +32,18 @@ func main() {
 	tileHeight := 0
 	tileCount := 0
 
-	files, _ := ioutil.ReadDir(*inDir)
+	files, err := ioutil.ReadDir(*inDir)
+	if err != nil {
+		log.Fatalf("error: %s", err)
+	}
+
 	for _, f := range files {
-
 		p := filepath.Join(*inDir, f.Name())
-
 		img, _, err := tiletools.DecodeImage(p)
 		if err != nil {
 			fmt.Printf("Error decoding: %s", err)
 			continue
 		}
-
 		b := img.Bounds()
 
 		if tileWidth == 0 && tileHeight == 0 {
@@ -51,7 +52,6 @@ func main() {
 		} else if b.Max.X != tileWidth || b.Max.Y != tileHeight {
 			fmt.Printf("Error: tile %s did not have expected dimensions of %d,%d\n", p, tileWidth, tileHeight)
 		}
-
 		tileCount++
 		images = append(images, img)
 	}
