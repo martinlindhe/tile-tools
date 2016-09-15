@@ -15,9 +15,9 @@ import (
 )
 
 var (
-	inDir       = kingpin.Arg("in", "Input directory").Required().String()
-	outFile     = kingpin.Flag("out", "Output PNG").Required().Short('o').String()
-	tilesPerRow = kingpin.Flag("tiles-per-row", "Tiles per row").Required().Int()
+	inDir       = kingpin.Arg("in", "Input directory.").Required().String()
+	outFile     = kingpin.Flag("out", "Output PNG.").Required().Short('o').String()
+	tilesPerRow = kingpin.Flag("tiles-per-row", "Tiles per row.").Required().Int()
 )
 
 func main() {

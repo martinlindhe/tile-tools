@@ -15,6 +15,7 @@ Slice input PNG into several tiles, save to out_font
     $ tileslicer _samples/ground.png --out _tmp --width 8 --height 12
     74 tiles written to _tmp
 
+
 ### Usage - tileflipper
 
 Flip (mirror) input PNG
@@ -28,8 +29,6 @@ Flip (mirror) input PNG
 Keeps bottom 1/3:rd of input image
 
     $ tilecutter _tmp
-
-TODO: allow to choose bottom or top part, allow to choose half, 1/3 or 2/3 to keep
 
 
 ### Usage - tilejoiner

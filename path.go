@@ -1,9 +1,20 @@
 package tiletools
 
-import "os"
+import (
+	"log"
+	"os"
+)
 
-// PathDontExist returns true if path does not exist
-func PathDontExist(path string) bool {
+func mkdirIfNotExisting(path string) {
+	if pathDontExist(path) {
+		err := os.Mkdir(path, 0777)
+		if err != nil {
+			log.Fatalf("Could not create %s: %s", path, err)
+		}
+	}
+}
+
+func pathDontExist(path string) bool {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return true
 	}

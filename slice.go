@@ -14,6 +14,7 @@ import (
 func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int) []image.Image {
 
 	var slices []image.Image
+	mkdirIfNotExisting(outDir)
 
 	img, _, err := DecodeImage(imgFile)
 	if err != nil {

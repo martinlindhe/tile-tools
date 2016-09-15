@@ -10,10 +10,10 @@ import (
 )
 
 var (
-	inFile     = kingpin.Arg("in", "Input PNG").Required().String()
-	outFile    = kingpin.Flag("out", "Output PNG").Required().Short('o').String()
-	vertical   = kingpin.Flag("vertical", "Vertical flip").Short('v').Bool()
-	horizontal = kingpin.Flag("horizontal", "Horizontal flip").Short('h').Bool()
+	inFile     = kingpin.Arg("in", "Input PNG.").Required().String()
+	outFile    = kingpin.Flag("out", "Output PNG.").Required().Short('o').String()
+	vertical   = kingpin.Flag("vertical", "Vertical flip.").Short('v').Bool()
+	horizontal = kingpin.Flag("horizontal", "Horizontal flip.").Short('h').Bool()
 )
 
 func main() {
