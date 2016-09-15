@@ -2,9 +2,11 @@ package main
 
 import (
 	"io/ioutil"
+	"log"
 	"path/filepath"
 
-	tiletools "github.com/martinlindhe/tile-tools/lib"
+	"github.com/disintegration/imaging"
+	"github.com/martinlindhe/tile-tools"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
@@ -25,6 +27,8 @@ func main() {
 		p := filepath.Join(*inDir, f.Name())
 		img := tiletools.GetBottomThirdOfImage(p)
 
-		tiletools.WritePNG(p, img)
+		if err := imaging.Save(img, p); err != nil {
+			log.Fatal(err)
+		}
 	}
 }

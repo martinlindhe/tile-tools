@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"image"
 	"image/draw"
-	"image/png"
 	"os"
 )
 
@@ -16,26 +15,6 @@ func DecodeImage(filename string) (image.Image, string, error) {
 	}
 	defer f.Close()
 	return image.Decode(bufio.NewReader(f))
-}
-
-// WritePNG ...
-func WritePNG(fileName string, m image.Image) error {
-
-	f, err := os.Create(fileName)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	b := bufio.NewWriter(f)
-	err = png.Encode(b, m)
-	if err != nil {
-		return err
-	}
-	err = b.Flush()
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 // GetBottomThirdOfImage ...

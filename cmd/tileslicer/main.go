@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	tiletools "github.com/martinlindhe/tile-tools/lib"
+	"github.com/martinlindhe/tile-tools"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 

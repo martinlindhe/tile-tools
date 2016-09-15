@@ -6,6 +6,8 @@ import (
 	"image/draw"
 	"log"
 	"math"
+
+	"github.com/disintegration/imaging"
 )
 
 // SliceImage ...
@@ -55,7 +57,9 @@ func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int) []
 			}
 
 			outFile := fmt.Sprintf("%s/%03d.png", outDir, cnt)
-			WritePNG(outFile, dst)
+			if err := imaging.Save(dst, outFile); err != nil {
+				log.Fatal(err)
+			}
 			cnt++
 		}
 	}
