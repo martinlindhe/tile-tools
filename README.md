@@ -26,9 +26,9 @@ Flip (mirror) input PNG
 
 ### Usage - tilecutter
 
-Keeps bottom 1/3:rd of input image
+Keeps bottom 1/3:rd of input images
 
-    $ tilecutter _tmp
+    $ tilecutter --keep-bottom --one-third _tmp
 
 
 ### Usage - tilejoiner
