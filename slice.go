@@ -11,8 +11,7 @@ import (
 )
 
 // SliceImage ...
-func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int) []image.Image {
-
+func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int, force bool) []image.Image {
 	var slices []image.Image
 	mkdirIfNotExisting(outDir)
 
@@ -28,15 +27,13 @@ func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int) []
 	cols := float64(imgWidth) / float64(tileWidth)
 	rows := float64(imgHeight) / float64(tileHeight)
 
-	if cols != math.Floor(cols) {
+	if !force && cols != math.Floor(cols) {
 		log.Fatalf("Input image width %d is not evenly divisable by tile width %d", imgWidth, tileWidth)
 	}
 
-	if rows != math.Floor(rows) {
+	if !force && rows != math.Floor(rows) {
 		log.Fatalf("Input image height %d is not evenly divisable by tile height %d", imgHeight, tileHeight)
 	}
-
-	//fmt.Printf("%f cols, %f rows\n", cols, rows)
 
 	// slice up image into tiles
 	cnt := 0
@@ -71,9 +68,7 @@ func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int) []
 
 // is this an empty tile?
 func isOnlyTransparent(img *image.RGBA) bool {
-
 	b := img.Bounds()
-
 	for y := b.Min.Y; y < b.Max.Y; y++ {
 		for x := b.Min.X; x < b.Max.X; x++ {
 			_, _, _, a := img.At(x, y).RGBA()
@@ -82,6 +77,5 @@ func isOnlyTransparent(img *image.RGBA) bool {
 			}
 		}
 	}
-
 	return true
 }
