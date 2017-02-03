@@ -10,7 +10,7 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-// SliceImage ...
+// SliceImage is used by cmd/tileslicer
 func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int, force bool) []image.Image {
 	var slices []image.Image
 	mkdirIfNotExisting(outDir)
