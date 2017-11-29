@@ -1,5 +1,7 @@
 # About
 
+[![GoDoc](https://godoc.org/github.com/martinlindhe/tile-tools?status.svg)](https://godoc.org/github.com/martinlindhe/tile-tools)
+
 Command-line tools to process tile set images
 
 Provides tileslicer, tilejoiner, tilecutter and tileflipper commands.
