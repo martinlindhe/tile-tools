@@ -1,6 +1,8 @@
 # About
 
-Command line tools to process tile set images
+Command-line tools to process tile set images
+
+Provides tileslicer, tilejoiner, tilecutter and tileflipper commands.
 
 
 ## Installation
@@ -8,7 +10,7 @@ Command line tools to process tile set images
     go get -u github.com/martinlindhe/tile-tools/...
 
 
-## Usage example - tileslicer
+## Usage - tileslicer
 
 Slices input image into several tiles.
 
@@ -42,6 +44,13 @@ You want to combine them to a tile map:
 
 
 
+## Usage - tilecutter
+
+Keeps bottom 1/3:rd of input images
+
+    $ tilecutter --keep-bottom --one-third _tmp
+
+
 
 ## Usage - tileflipper
 
@@ -49,14 +58,6 @@ Flip (mirror) input image
 
     $ tileflipper _samples/ground.png --out flipped-ground-h.png --horizontal
     $ tileflipper _samples/ground.png --out flipped-ground-v.png --vertical
-
-
-## Usage - tilecutter
-
-Keeps bottom 1/3:rd of input images
-
-    $ tilecutter --keep-bottom --one-third _tmp
-
 
 
 ## License

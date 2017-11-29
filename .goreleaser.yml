@@ -6,6 +6,7 @@ builds:
     goos:
       - windows
       - darwin
+      - linux
     goarch:
       - 386
       - amd64
@@ -18,6 +19,7 @@ builds:
     goos:
       - windows
       - darwin
+      - linux
     goarch:
       - 386
       - amd64
@@ -30,6 +32,7 @@ builds:
     goos:
       - windows
       - darwin
+      - linux
     goarch:
       - 386
       - amd64
@@ -43,9 +46,24 @@ archive:
     - goos: windows
       format: zip
   replacements:
-    amd64: 64-bit
-    386: 32-bit
+    amd64: x86_64
+    386: i686
     darwin: macOS
   files:
     - README.md
     - LICENSE
+snapcraft:
+  summary: Command-line tools to process tile set images
+  description: |
+    Provides tileslicer, tilejoiner, tilecutter and tileflipper commands.
+  grade: beta
+  confinement: strict
+  apps:
+    tilecutter:
+      plugs: ["home"]
+    tilejoiner:
+      plugs: ["home"]
+    tileslicer:
+      plugs: ["home"]
+    tileflipper:
+      plugs: ["home"]
