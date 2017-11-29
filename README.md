@@ -3,20 +3,47 @@
 Command line tools to process tile set images
 
 
-### Installation
+## Installation
 
     go get -u github.com/martinlindhe/tile-tools/...
 
 
-### Usage - tileslicer
+## Usage example - tileslicer
 
-Slice input image into several tiles, save to out_font
+Slices input image into several tiles.
 
-    $ tileslicer _samples/ground.png --out _tmp --width 8 --height 12
-    74 tiles written to _tmp
+You have a tile map:
+
+![have](docs/ex_tilemap.png)
+
+You want to slice it into equally sized tiles:
+
+![want](docs/ex_tiles.png)
 
 
-### Usage - tileflipper
+    $ tileslicer 1.png --out ./parts --width 32 --height 32
+
+
+
+## Usage - tilejoiner
+
+Combines all images in a folder into a new tile set
+
+You have a bunch of equally sized tiles:
+
+![want](docs/ex_tiles.png)
+
+
+You want to combine them to a tile map:
+
+![have](docs/ex_tilemap.png)
+
+    $ tilejoiner ./parts --out 1.png --tiles-per-row 6
+
+
+
+
+## Usage - tileflipper
 
 Flip (mirror) input image
 
@@ -24,22 +51,14 @@ Flip (mirror) input image
     $ tileflipper _samples/ground.png --out flipped-ground-v.png --vertical
 
 
-### Usage - tilecutter
+## Usage - tilecutter
 
 Keeps bottom 1/3:rd of input images
 
     $ tilecutter --keep-bottom --one-third _tmp
 
 
-### Usage - tilejoiner
 
-Combines all images in a folder into a new tile set
-
-    $ tilejoiner _tmp --out ground-out.png --tiles-per-row 4
-    Creating tileset of 74 tiles with 8x4 pixels, 4 tiles per row. Output is image is 32x32 pixels
-    Writing to ground-out.png
-
-
-### License
+## License
 
 Under [MIT](LICENSE)
