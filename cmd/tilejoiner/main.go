@@ -39,7 +39,7 @@ func main() {
 
 	for _, f := range files {
 		p := filepath.Join(*inDir, f.Name())
-		img, _, err := tiletools.DecodeImage(p)
+		img, _, err := tiletools.LoadImage(p)
 		if err != nil {
 			fmt.Printf("Error decoding: %s", err)
 			continue

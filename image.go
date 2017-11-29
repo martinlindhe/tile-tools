@@ -2,12 +2,15 @@ package tiletools
 
 import (
 	"bufio"
+	"fmt"
 	"image"
 	"image/draw"
 	"os"
+
+	"github.com/disintegration/imaging"
 )
 
-// Section ...
+// Section indicates which part of the image to keep
 type Section int
 
 // ...
@@ -18,7 +21,7 @@ const (
 	Right
 )
 
-// KeepSize ...
+// KeepSize indicates the size of the image to keep
 type KeepSize int
 
 // ...
@@ -28,14 +31,33 @@ const (
 	TwoThirds
 )
 
-// DecodeImage ...
-func DecodeImage(filename string) (image.Image, string, error) {
+// LoadImage ...
+func LoadImage(filename string) (image.Image, string, error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return nil, "", err
 	}
 	defer f.Close()
 	return image.Decode(bufio.NewReader(f))
+}
+
+// WriteImages ...
+func WriteImages(imgs []image.Image, dstDir string) error {
+	mkdirIfNotExisting(dstDir)
+	cnt := 0
+	for _, img := range imgs {
+		if rgba, ok := img.(*image.RGBA); ok {
+			if isOnlyTransparent(rgba) {
+				continue
+			}
+		}
+		fileName := fmt.Sprintf("%s/%03d.png", dstDir, cnt)
+		if err := imaging.Save(img, fileName); err != nil {
+			return err
+		}
+		cnt++
+	}
+	return nil
 }
 
 func usedBounds(section Section, keepSize KeepSize, b image.Rectangle) (int, int) {
@@ -115,8 +137,7 @@ func makeRect(section Section, keepSize KeepSize, b image.Rectangle) (int, int, 
 
 // GetPartOfImage returns 1/3:rd of section
 func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.RGBA {
-
-	img, _, err := DecodeImage(fileName)
+	img, _, err := LoadImage(fileName)
 	if err != nil {
 		panic(err)
 	}
@@ -126,5 +147,4 @@ func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.
 	r := sr.Sub(sr.Min).Add(image.Point{0, 0})
 	draw.Draw(dst, r, img, sr.Min, draw.Src)
 	return dst
-
 }

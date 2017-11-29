@@ -4,20 +4,16 @@ import (
 	"fmt"
 	"image"
 	"image/draw"
-	"log"
 	"math"
-
-	"github.com/disintegration/imaging"
 )
 
-// SliceImage is used by cmd/tileslicer
-func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int, force bool) []image.Image {
+// SliceImage slices input imgFile into smaller tiles
+func SliceImage(imgFile string, tileWidth int, tileHeight int, force bool) ([]image.Image, error) {
 	var slices []image.Image
-	mkdirIfNotExisting(outDir)
 
-	img, _, err := DecodeImage(imgFile)
+	img, _, err := LoadImage(imgFile)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	b := img.Bounds()
@@ -28,15 +24,13 @@ func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int, fo
 	rows := float64(imgHeight) / float64(tileHeight)
 
 	if !force && cols != math.Floor(cols) {
-		log.Fatalf("Input image width %d is not evenly divisable by tile width %d", imgWidth, tileWidth)
+		return nil, fmt.Errorf("input image width %d is not evenly divisable by tile width %d", imgWidth, tileWidth)
 	}
 
 	if !force && rows != math.Floor(rows) {
-		log.Fatalf("Input image height %d is not evenly divisable by tile height %d", imgHeight, tileHeight)
+		return nil, fmt.Errorf("input image height %d is not evenly divisable by tile height %d", imgHeight, tileHeight)
 	}
 
-	// slice up image into tiles
-	cnt := 0
 	for row := 0; row < int(rows); row++ {
 		for col := 0; col < int(cols); col++ {
 			x0 := col * tileWidth
@@ -48,22 +42,10 @@ func SliceImage(imgFile string, outDir string, tileWidth int, tileHeight int, fo
 			dst := image.NewRGBA(image.Rect(0, 0, tileWidth, tileHeight))
 			r := sr.Sub(sr.Min).Add(image.Point{0, 0})
 			draw.Draw(dst, r, img, sr.Min, draw.Src)
-
-			if isOnlyTransparent(dst) {
-				fmt.Printf("Skipping empty tile at row %d, col %d\n", row, col)
-				continue
-			}
-
-			outFile := fmt.Sprintf("%s/%03d.png", outDir, cnt)
-			if err := imaging.Save(dst, outFile); err != nil {
-				log.Fatal(err)
-			}
-			cnt++
+			slices = append(slices, dst)
 		}
 	}
-
-	fmt.Printf("%d tiles written to %s\n", cnt, outDir)
-	return slices
+	return slices, nil
 }
 
 // is this an empty tile?

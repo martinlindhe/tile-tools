@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/martinlindhe/tile-tools"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -16,5 +19,10 @@ var (
 func main() {
 	kingpin.Parse()
 	inFileName := (*file).Name()
-	tiletools.SliceImage(inFileName, *outDir, *tileWidth, *tileHeight, *force)
+	images, err := tiletools.SliceImage(inFileName, *tileWidth, *tileHeight, *force)
+	if err != nil {
+		log.Fatal(err)
+	}
+	tiletools.WriteImages(images, *outDir)
+	fmt.Println(len(images), "tiles written to", *outDir)
 }

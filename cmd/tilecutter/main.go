@@ -48,26 +48,31 @@ func parseSectionAndKeepSize() (tiletools.Section, tiletools.KeepSize) {
 	var keepSize tiletools.KeepSize
 	keep := 0
 	size := 0
-	switch {
-	case *keepTop:
+	if *keepTop {
 		section = tiletools.Top
 		keep++
-	case *keepBottom:
+	}
+	if *keepBottom {
 		section = tiletools.Bottom
 		keep++
-	case *keepRight:
+	}
+	if *keepRight {
 		section = tiletools.Right
 		keep++
-	case *keepLeft:
+	}
+	if *keepLeft {
 		section = tiletools.Left
 		keep++
-	case *half:
+	}
+	if *half {
 		keepSize = tiletools.Half
 		size++
-	case *oneThird:
+	}
+	if *oneThird {
 		keepSize = tiletools.OneThird
 		size++
-	case *twoThirds:
+	}
+	if *twoThirds {
 		keepSize = tiletools.TwoThirds
 		size++
 	}
