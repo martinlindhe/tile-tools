@@ -24,11 +24,11 @@ func SliceImage(imgFile string, tileWidth int, tileHeight int, force bool) ([]im
 	rows := float64(imgHeight) / float64(tileHeight)
 
 	if !force && cols != math.Floor(cols) {
-		return nil, fmt.Errorf("input image width %d is not evenly divisable by tile width %d", imgWidth, tileWidth)
+		return nil, fmt.Errorf("input image width %d is not evenly divisible by tile width %d", imgWidth, tileWidth)
 	}
 
 	if !force && rows != math.Floor(rows) {
-		return nil, fmt.Errorf("input image height %d is not evenly divisable by tile height %d", imgHeight, tileHeight)
+		return nil, fmt.Errorf("input image height %d is not evenly divisible by tile height %d", imgHeight, tileHeight)
 	}
 
 	for row := 0; row < int(rows); row++ {

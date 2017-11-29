@@ -22,21 +22,23 @@ var (
 )
 
 func main() {
-
 	// support -h for --help
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Parse()
 	section, keepSize := parseSectionAndKeepSize()
 
-	// loop over input folder
 	files, err := ioutil.ReadDir(*inDir)
 	if err != nil {
 		log.Fatalf("error: %s", err)
 	}
 
+	// loop over input folder
 	for _, f := range files {
 		p := filepath.Join(*inDir, f.Name())
-		img := tiletools.GetPartOfImage(p, section, keepSize)
+		img, err := tiletools.GetPartOfImage(p, section, keepSize)
+		if err != nil {
+			log.Fatal(err)
+		}
 		if err := imaging.Save(img, p); err != nil {
 			log.Fatal(err)
 		}

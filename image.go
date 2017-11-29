@@ -31,7 +31,7 @@ const (
 	TwoThirds
 )
 
-// LoadImage ...
+// LoadImage loads a image from disk
 func LoadImage(filename string) (image.Image, string, error) {
 	f, err := os.Open(filename)
 	if err != nil {
@@ -41,7 +41,7 @@ func LoadImage(filename string) (image.Image, string, error) {
 	return image.Decode(bufio.NewReader(f))
 }
 
-// WriteImages ...
+// WriteImages saves a slice of images to disk
 func WriteImages(imgs []image.Image, dstDir string) error {
 	mkdirIfNotExisting(dstDir)
 	cnt := 0
@@ -135,16 +135,16 @@ func makeRect(section Section, keepSize KeepSize, b image.Rectangle) (int, int, 
 	return tX, tY, sr
 }
 
-// GetPartOfImage returns 1/3:rd of section
-func GetPartOfImage(fileName string, section Section, keepSize KeepSize) *image.RGBA {
+// GetPartOfImage returns specified Section and Size of image
+func GetPartOfImage(fileName string, section Section, keepSize KeepSize) (*image.RGBA, error) {
 	img, _, err := LoadImage(fileName)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	b := img.Bounds()
 	tX, tY, sr := makeRect(section, keepSize, b)
 	dst := image.NewRGBA(image.Rect(0, 0, tX, tY))
 	r := sr.Sub(sr.Min).Add(image.Point{0, 0})
 	draw.Draw(dst, r, img, sr.Min, draw.Src)
-	return dst
+	return dst, nil
 }
