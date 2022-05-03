@@ -1,69 +1,38 @@
-# Build customization
+env:
+  - CGO_ENABLED=0
+
 builds:
-  -
-    main: ./cmd/tilecutter/main.go
-    binary: tilecutter
+  - id: eqbc-go
+    main: ./cmd/eqbc
+    binary: eqbc
     goos:
-      - windows
-      - darwin
       - linux
+      - darwin
+      - windows
     goarch:
       - 386
       - amd64
     ignore:
       - goos: darwin
         goarch: 386
-  -
-    main: ./cmd/tileflipper/main.go
-    binary: tileflipper
-    goos:
-      - windows
-      - darwin
-      - linux
-    goarch:
-      - 386
-      - amd64
-    ignore:
-      - goos: darwin
+      - goos: linux
         goarch: 386
-  -
-    main: ./cmd/tileslicer/main.go
-    binary: tileslicer
-    goos:
-      - windows
-      - darwin
-      - linux
-    goarch:
-      - 386
-      - amd64
-    ignore:
-      - goos: darwin
-        goarch: 386
-# Archive customization
-archive:
-  format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
-  replacements:
-    amd64: x86_64
-    386: i686
-    darwin: macOS
-  files:
-    - README.md
-    - LICENSE
-snapcraft:
-  summary: Command-line tools to process tile set images
-  description: |
-    Provides tileslicer, tilejoiner, tilecutter and tileflipper commands.
-  grade: beta
-  confinement: strict
-  apps:
-    tilecutter:
-      plugs: ["home"]
-    tilejoiner:
-      plugs: ["home"]
-    tileslicer:
-      plugs: ["home"]
-    tileflipper:
-      plugs: ["home"]
+
+archives:
+  - id: all
+    format_overrides:
+      - goos: windows
+        format: zip
+    replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}"
+changelog:
+  sort: asc
