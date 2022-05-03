@@ -7,8 +7,3 @@ test:
 
 install:
 	go get ./cmd/...
-
-update-dep:
-	dep ensure
-	dep ensure -update
-	dep prune
