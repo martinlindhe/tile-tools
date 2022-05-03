@@ -9,7 +9,10 @@ Provides tileslicer, tilejoiner, tilecutter and tileflipper commands.
 
 ## Installation
 
-    go get -u github.com/martinlindhe/tile-tools/...
+    go install github.com/martinlindhe/tile-tools/cmd/tileslicer@latest
+    go install github.com/martinlindhe/tile-tools/cmd/tilejoiner@latest
+    go install github.com/martinlindhe/tile-tools/cmd/tilecutter@latest
+    go install github.com/martinlindhe/tile-tools/cmd/tileflipper@latest
 
 
 ## Usage - tileslicer
